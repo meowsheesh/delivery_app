@@ -126,6 +126,36 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin  
         builder: (_, state){
           if(state is HomePageReadyState){
 
+            if(tabController.index == 1){
+              List<Marker> updatedMarkers = [];
+              for(var point in state.points!){
+                updatedMarkers.add(
+                    Marker(
+                        markerId:  MarkerId('${point.id}'),
+                        position: LatLng(point.lat!, point.lon!),
+                        draggable: false,
+                        infoWindow: InfoWindow(
+                          title: point.name!,
+                        ),
+                        onTap: (){}
+                    )
+                );
+              }
+              updatedMarkers.add(Marker(
+                  markerId: const MarkerId('1'),
+                  position: const LatLng(59.936381, 30.316905),
+                  icon: BitmapDescriptor.fromBytes(markerIcon),
+                  draggable: false,
+                  infoWindow: const InfoWindow(
+                    title: 'Вы здесь',
+                  ),
+                  anchor: const Offset(1.0, 0.5),
+                  onTap: (){}
+              ),);
+              markers = updatedMarkers;
+              print(markers.length);
+            }
+
             return Column(
               children: [
                 // Half-height container for Google Maps widget
@@ -158,27 +188,10 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin  
                     ),
                     child: TabBar(
                       onTap: (_){
-                        if(tabController.index == 1){
-                          List<Marker> updatedMarkers = [];
-                          for(var point in state.points!){
-                            updatedMarkers.add(
-                                Marker(
-                                    markerId:  MarkerId('${point.id}'),
-                                    position: LatLng(point.lat!, point.lon!),
-                                    draggable: false,
-                                    infoWindow: InfoWindow(
-                                      title: point.name!,
-                                    ),
-                                    onTap: (){}
-                                )
-                            );
-                          }
-                          setState(() {
 
-                          });
-                          markers = updatedMarkers;
-                          print(markers.length);
-                        }
+                        setState(() {
+
+                        });
                       },
                         unselectedLabelColor: Colors.black,
                         controller: tabController,
